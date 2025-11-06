@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
-import Header from './components/Header'
+import Hero from './components/Hero'
 import ChatWindow from './components/ChatWindow'
 import VoiceControls from './components/VoiceControls'
 import VideoResponder from './components/VideoResponder'
 
 function App() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hey! I am your AI companion. Speak or type a message and I will reply with voice and an animated video.' }
+    { role: 'assistant', content: 'I am Alya-san, your iridescent AI companion. Speak or type a message and I will reply with voice and visuals.' }
   ])
 
   const lastAssistantMessage = useMemo(() => {
@@ -21,7 +21,7 @@ function App() {
     const user = { role: 'user', content: text.trim() }
     setMessages(prev => [...prev, user])
 
-    // Very simple on-device response for demo purposes
+    // Simple local reply stub for demo
     const reply = smartLocalReply(text)
     const assistant = { role: 'assistant', content: reply }
     setTimeout(() => setMessages(prev => [...prev, assistant]), 300)
@@ -29,16 +29,16 @@ function App() {
 
   function smartLocalReply(text) {
     const t = text.toLowerCase()
-    if (t.includes('hello') || t.includes('hi')) return "Hello! Great to hear your voice. How can I help you today?"
-    if (t.includes('weather')) return "I can't fetch live weather here, but you can ask me to summarize, plan, or brainstorm anything."
-    if (t.includes('name')) return "I'm your friendly AI. I speak back and show an ambient video for responses."
-    if (t.includes('video')) return "You're seeing a waveform video as I talk. I can also keep chatting—ask me anything!"
-    return `You said: "${text}". I'm here and listening. What would you like to do next?`
+    if (t.includes('hello') || t.includes('hi')) return "Hello! I’m Alya-san. How can I help you today?"
+    if (t.includes('name')) return "I’m Alya-san — a verified, holographic identity who speaks back."
+    if (t.includes('video')) return "I respond with voice and an ambient visual so you can listen while you watch."
+    if (t.includes('weather')) return "I can’t fetch live weather here, but I can plan, summarize, or brainstorm with you."
+    return `You said: "${text}". I’m here and listening. What would you like to do next?`
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-gray-900">
-      <Header />
+      <Hero />
 
       <main className="mx-auto max-w-6xl px-4 py-8 grid lg:grid-cols-2 gap-8 items-start">
         <div className="space-y-4">
@@ -55,7 +55,7 @@ function App() {
         </div>
       </main>
 
-      <footer className="py-6 text-center text-xs text-gray-500">Built for natural, voice-first conversations with a simple video response.</footer>
+      <footer className="py-6 text-center text-xs text-gray-500">Built for natural voice conversations with a vivid video response.</footer>
     </div>
   )
 }
