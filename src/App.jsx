@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import ChatWindow from './components/ChatWindow'
 import VoiceControls from './components/VoiceControls'
 import VideoResponder from './components/VideoResponder'
+import AlyaIdentity from './components/AlyaIdentity'
 
 function App() {
   const [messages, setMessages] = useState([
@@ -50,6 +51,7 @@ function App() {
         </div>
 
         <div className="space-y-4">
+          <AlyaIdentity />
           <ChatWindow messages={messages} />
           <MessageInput onSend={addUserMessage} />
         </div>
