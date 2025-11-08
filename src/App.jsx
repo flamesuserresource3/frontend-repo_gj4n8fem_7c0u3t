@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react'
-import Hero from './components/Hero'
+import { Suspense, lazy, useMemo, useState } from 'react'
 import ChatWindow from './components/ChatWindow'
 import VoiceControls from './components/VoiceControls'
-import VideoResponder from './components/VideoResponder'
 import AlyaIdentity from './components/AlyaIdentity'
+
+// Lazy-load heavier visual components to reduce initial lag
+const Hero = lazy(() => import('./components/Hero'))
+const VideoResponder = lazy(() => import('./components/VideoResponder'))
 
 function App() {
   const [messages, setMessages] = useState([
@@ -25,7 +27,7 @@ function App() {
     // Simple local reply stub for demo
     const reply = smartLocalReply(text)
     const assistant = { role: 'assistant', content: reply }
-    setTimeout(() => setMessages(prev => [...prev, assistant]), 300)
+    setTimeout(() => setMessages(prev => [...prev, assistant]), 250)
   }
 
   function smartLocalReply(text) {
@@ -39,11 +41,15 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-gray-900">
-      <Hero />
+      <Suspense fallback={<div className="w-full min-h-[50vh] grid place-items-center text-sm text-gray-500">Loading visual scene…</div>}>
+        <Hero />
+      </Suspense>
 
       <main className="mx-auto max-w-6xl px-4 py-8 grid lg:grid-cols-2 gap-8 items-start">
         <div className="space-y-4">
-          <VideoResponder text={lastAssistantMessage} />
+          <Suspense fallback={<div className="w-full aspect-video rounded-2xl border grid place-items-center text-sm text-gray-500 bg-white">Loading video responder…</div>}>
+            <VideoResponder text={lastAssistantMessage} />
+          </Suspense>
           <div className="rounded-2xl border bg-white p-4 md:p-6 shadow">
             <h2 className="font-semibold mb-3">Voice controls</h2>
             <VoiceControls onTranscript={addUserMessage} />
